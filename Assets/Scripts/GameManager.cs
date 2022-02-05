@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _PoppingObstacles()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         _PopObstacles();
 
         while (true)

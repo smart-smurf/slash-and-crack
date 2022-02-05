@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class ObstacleManager : MonoBehaviour
 {
     [SerializeField] private GameObject _normalMesh;
     [SerializeField] private GameObject _fracturedMesh;
+    private Collider _collider;
 
     private void Awake()
     {
+        _collider = GetComponent<Collider>();
         GameManager.instance.obstacles.Add(this);
     }
 
@@ -30,6 +33,7 @@ public class ObstacleManager : MonoBehaviour
     public void Die(bool direct = false)
     {
         GameManager.instance.obstacles.Remove(this);
+        _collider.enabled = false;
         if (!direct)
         {
             EventManager.TriggerEvent("ObstacleDestroyed");

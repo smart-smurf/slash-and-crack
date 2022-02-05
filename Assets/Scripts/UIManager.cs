@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private const int _INIT_LIVES = 1;
+    private const int _INIT_LIVES = 4;
     private const float _STAR_UNIT_SIZE = 720f;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject _lifePrefab;
 
     [Header("References")]
+    [SerializeField] private GameObject _startText;
     [SerializeField] private Text _scoreText;
     [SerializeField] private Transform _livesParent;
     [SerializeField] private RectTransform _starsParent;
@@ -94,13 +95,25 @@ public class UIManager : MonoBehaviour
         _scoreText.text = _score.ToString();
 
         _gameOverPanel.SetActive(false);
+        _invulnerabilityScreen.gameObject.SetActive(true);
         _invulnerabilityScreen.color = new Color(1f, 0f, 0f, 0f);
+
+        StartCoroutine(_ShowingStartText());
     }
 
     private void _GameOver()
     {
         EventManager.TriggerEvent("GameOver");
         _gameOverPanel.SetActive(true);
+    }
+
+    private IEnumerator _ShowingStartText()
+    {
+        _startText.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        _startText.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        _startText.SetActive(false);
     }
 
     private IEnumerator _FadingInvulnerabilityScreen()

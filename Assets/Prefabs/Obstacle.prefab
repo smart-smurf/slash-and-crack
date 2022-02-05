@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7118563901889892850}
   - component: {fileID: 990657101495469063}
   - component: {fileID: 1207805071502716037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8267466147572615159}
   - component: {fileID: -1420233853273740186}
-  m_Layer: 0
+  - component: {fileID: 8752649357698540145}
+  m_Layer: 6
   m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,6 +149,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalMesh: {fileID: 2369032461245741359}
   _fracturedMesh: {fileID: 8369006441925607049}
+--- !u!65 &8752649357698540145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865645703930787888}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.1610441, y: 2, z: 1.9463186}
+  m_Center: {x: 0.0805223, y: 0, z: 0.18788505}
 --- !u!1 &2369032461245741359
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +173,7 @@ GameObject:
   - component: {fileID: 3481815526009560876}
   - component: {fileID: 2453884337301050658}
   - component: {fileID: 824687218413935322}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +255,7 @@ GameObject:
   - component: {fileID: 8068115133620255410}
   - component: {fileID: 1731941784777509243}
   - component: {fileID: 6000857884855982799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9182698524886574131}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MeshFractured
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +390,7 @@ GameObject:
   - component: {fileID: 1077673892078238173}
   - component: {fileID: 5117616876359834808}
   - component: {fileID: 1809223694474835465}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,7 +491,7 @@ GameObject:
   - component: {fileID: 3937229879123938116}
   - component: {fileID: 7840275410193143890}
   - component: {fileID: 3503973398308054948}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cell.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
