@@ -70,7 +70,7 @@ public class InputManager : MonoBehaviour
 
         float a = (_endPos.y - _startPos.y) / (_endPos.x - _startPos.x);
         float b = _startPos.y - a * _startPos.x;
-        float scaleFactor = 1.5f;
+        float scaleFactor = 1.8f;
         float yRef, x, y, xMin, xMax, yMin, yMax;
         List<ObstacleManager> obstacles =
             new List<ObstacleManager>(GameManager.instance.obstacles);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ObstacleManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _normalMesh;
+    [SerializeField] private GameObject _fracturedMesh;
+
     private void Awake()
     {
         GameManager.instance.obstacles.Add(this);
@@ -18,9 +21,29 @@ public class ObstacleManager : MonoBehaviour
             Die(direct: true);
     }
 
+    public void SetRotation(Vector3 eulerAngles)
+    {
+        _normalMesh.transform.eulerAngles = eulerAngles;
+        _fracturedMesh.transform.eulerAngles = eulerAngles;
+    }
+
     public void Die(bool direct = false)
     {
         GameManager.instance.obstacles.Remove(this);
+        if (!direct)
+        {
+            _fracturedMesh.SetActive(true);
+            _normalMesh.SetActive(false);
+            Invoke("_Destroy", 0.45f);
+        }
+        else
+        {
+            _Destroy();
+        }
+    }
+
+    private void _Destroy()
+    {
         Destroy(gameObject);
     }
 }

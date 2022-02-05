@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private const float _INIT_SPEED = 60f;
+    private const float _INIT_SPEED = 100f;
     private const float _BASE_Y = 14f;
 
     public static GameManager instance;
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        speed = _INIT_SPEED + 2f * Time.time;
+        speed = _INIT_SPEED + 3f * Time.time;
     }
 
     private IEnumerator _PoppingObstacles()
@@ -50,9 +50,17 @@ public class GameManager : MonoBehaviour
     private void _PopObstacle()
     {
         Vector3 p = new Vector3(
-            Random.Range(-5f, 5f),
-            _BASE_Y + Random.Range(2f, 6f),
+            Random.Range(-4f, 4f),
+            _BASE_Y + Random.Range(1f, 4f),
             1f);
         GameObject o = Instantiate(_obstaclePrefab, p, Quaternion.identity);
+        o.transform.localScale = new Vector3(
+            Random.Range(0.6f, 1.2f),
+            Random.Range(0.6f, 1.2f),
+            Random.Range(0.6f, 1.2f));
+        o.GetComponent<ObstacleManager>().SetRotation(new Vector3(
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f)));
     }
 }
