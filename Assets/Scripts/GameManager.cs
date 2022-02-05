@@ -77,6 +77,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        EventManager.TriggerEvent("PauseToggled", true);
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1;
+        EventManager.TriggerEvent("PauseToggled", false);
+    }
+
     public void Replay()
     {
         EventManager.TriggerEvent("Reset");

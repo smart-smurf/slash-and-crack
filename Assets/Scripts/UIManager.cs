@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     private float d;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Image _invulnerabilityScreen;
+    [SerializeField] private GameObject _pausePanel;
 
     private int _lives;
     private int _score;
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("ObstacleDestroyed", _OnObstacleDestroyed);
         EventManager.AddListener("ObstaclePassed", _OnObstaclePassed);
         EventManager.AddListener("Reset", _OnReset);
+        EventManager.AddListener("PauseToggled", _OnPauseToggled);
     }
 
     private void OnDisable()
@@ -51,6 +53,7 @@ public class UIManager : MonoBehaviour
         EventManager.RemoveListener("ObstacleDestroyed", _OnObstacleDestroyed);
         EventManager.RemoveListener("ObstaclePassed", _OnObstaclePassed);
         EventManager.RemoveListener("Reset", _OnReset);
+        EventManager.RemoveListener("PauseToggled", _OnPauseToggled);
     }
 
     private void _OnObstacleDestroyed()
@@ -97,8 +100,14 @@ public class UIManager : MonoBehaviour
         _gameOverPanel.SetActive(false);
         _invulnerabilityScreen.gameObject.SetActive(true);
         _invulnerabilityScreen.color = new Color(1f, 0f, 0f, 0f);
+        _pausePanel.SetActive(false);
 
         StartCoroutine(_ShowingStartText());
+    }
+
+    private void _OnPauseToggled(object on)
+    {
+        _pausePanel.SetActive((bool) on);
     }
 
     private void _GameOver()

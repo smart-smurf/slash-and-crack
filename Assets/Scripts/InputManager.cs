@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -17,21 +16,30 @@ public class InputManager : MonoBehaviour
     private RaycastHit _hit;
     private LayerMask _obstacleLayerMask;
 
+    private float _topUIThreshold;
+
     private void Start()
     {
         _obstacleLayerMask = LayerMask.GetMask("Obstacle");
 
+        _topUIThreshold = Screen.height - 100;
+
         _mainCamera = Camera.main;
         _trailRenderer = _trail.GetComponent<TrailRenderer>();
+        _trailingCoroutine = null;
     }
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         if (Input.touches.Length > 0)
         {
             _t = Input.touches[0];
             if (_t.phase == TouchPhase.Began)
             {
+                if (_t.position.y >= _topUIThreshold) return;
+
                 _trailRenderer.enabled = true;
                 _touching = true;
                 _trail.position = _GetWorldPoint(_t.position);
@@ -49,7 +57,11 @@ public class InputManager : MonoBehaviour
             {
                 _trailRenderer.enabled = false;
                 _touching = false;
-                StopCoroutine(_trailingCoroutine);
+                if (_trailingCoroutine != null)
+                {
+                    StopCoroutine(_trailingCoroutine);
+                    _trailingCoroutine = null;
+                }
             }
         }
     }
