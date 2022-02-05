@@ -14,10 +14,16 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _obstaclePrefab;
 
+    private float _popMinWait;
+    private float _popMaxWait;
+
     void Start()
     {
         if (instance == null)
             instance = this;
+
+        _popMinWait = 3f;
+        _popMaxWait = 6f;
 
         speed = _INIT_SPEED;
         obstacles = new List<ObstacleManager>();
@@ -26,7 +32,34 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        speed = _INIT_SPEED + 3f * Time.time;
+        speed = _INIT_SPEED + 2f * Time.time;
+
+        if (Time.time > 10f)
+        {
+            _popMinWait = 1.5f;
+            _popMaxWait = 4f;
+        }
+        else if (Time.time > 60f)
+        {
+            _popMinWait = 1f;
+            _popMaxWait = 3f;
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("ObstacleDestroyed", _OnObstacleDestroyed);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("ObstacleDestroyed", _OnObstacleDestroyed);
+    }
+
+    private void _OnObstacleDestroyed()
+    {
+        if (Random.Range(0f, 1f) < 0.5f)
+            _PopObstacle();
     }
 
     private IEnumerator _PoppingObstacles()
@@ -36,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(3f, 6f));
+            yield return new WaitForSeconds(Random.Range(_popMinWait, _popMaxWait));
             _PopObstacles();
         }
     }
