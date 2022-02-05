@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+public enum AudioClipId
+{
+    PlayerHit = 0,
+    Slash,
+}
+
 public class AudioManager : MonoBehaviour
 {
 
@@ -12,6 +18,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Image _audioToggleButtonImage;
     [SerializeField] private Sprite _audioSpriteOn;
     [SerializeField] private Sprite _audioSpriteOff;
+
+    [SerializeField] private AudioSource _soundsSource;
+    [SerializeField] private AudioClip[] _clips;
 
     private void Start()
     {
@@ -45,6 +54,12 @@ public class AudioManager : MonoBehaviour
             _mixer.SetFloat("volume", 0f);
             _audioToggleButtonImage.sprite = _audioSpriteOn;
         }
+    }
+
+    public void PlaySound(AudioClipId clipId)
+    {
+        if (!_soundsSource) return;
+        _soundsSource.PlayOneShot(_clips[(int)clipId]);
     }
 
 }

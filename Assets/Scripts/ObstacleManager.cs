@@ -44,6 +44,7 @@ public class ObstacleManager : MonoBehaviour
     public void TakeHit()
     {
         if (_takenHit) return;
+        AudioManager.instance.PlaySound(AudioClipId.Slash);
         StartCoroutine(_TakingHit());
     }
 
