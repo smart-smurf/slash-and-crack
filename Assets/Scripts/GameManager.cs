@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GameManager : MonoBehaviour
 {
+    public const float INVULNERABILITY_DELAY = 1f;
     private const float _INIT_SPEED = 100f;
     private const float _BASE_Y = 14f;
 
@@ -11,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public float speed;
     [HideInInspector] public List<ObstacleManager> obstacles;
+    [HideInInspector] public bool invulnerable;
 
     [SerializeField] private GameObject _obstaclePrefab;
 
@@ -22,11 +27,13 @@ public class GameManager : MonoBehaviour
         if (instance == null)
             instance = this;
 
+        speed = _INIT_SPEED;
+        obstacles = new List<ObstacleManager>();
+        invulnerable = false;
+
         _popMinWait = 3f;
         _popMaxWait = 6f;
 
-        speed = _INIT_SPEED;
-        obstacles = new List<ObstacleManager>();
         StartCoroutine(_PoppingObstacles());
     }
 
@@ -49,17 +56,59 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.AddListener("ObstacleDestroyed", _OnObstacleDestroyed);
+        EventManager.AddListener("GameOver", _OnGameOver);
     }
 
     private void OnDisable()
     {
         EventManager.RemoveListener("ObstacleDestroyed", _OnObstacleDestroyed);
+        EventManager.RemoveListener("GameOver", _OnGameOver);
     }
 
     private void _OnObstacleDestroyed()
     {
         if (Random.Range(0f, 1f) < 0.5f)
             _PopObstacle();
+    }
+
+    public void CheckInvulnerability()
+    {
+        if (!invulnerable)
+        {
+            invulnerable = true;
+            Invoke("_RemoveInvulnerability", INVULNERABILITY_DELAY);
+        }
+    }
+
+    public void Replay()
+    {
+        EventManager.TriggerEvent("Reset");
+
+        List<ObstacleManager> obs = new List<ObstacleManager>(obstacles);
+        foreach (ObstacleManager om in obs)
+            om.Die(direct: true);
+
+        speed = _INIT_SPEED;
+        invulnerable = false;
+
+        _popMinWait = 3f;
+        _popMaxWait = 6f;
+
+        Time.timeScale = 1;
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
+    }
+
+    private void _OnGameOver()
+    {
+        Time.timeScale = 0;
     }
 
     private IEnumerator _PoppingObstacles()
@@ -95,5 +144,10 @@ public class GameManager : MonoBehaviour
             Random.Range(0f, 360f),
             Random.Range(0f, 360f),
             Random.Range(0f, 360f)));
+    }
+
+    private void _RemoveInvulnerability()
+    {
+        invulnerable = false;
     }
 }

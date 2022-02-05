@@ -39,6 +39,7 @@ public class ObstacleManager : MonoBehaviour
         }
         else
         {
+            EventManager.TriggerEvent("ObstaclePassed");
             _Destroy();
         }
     }
