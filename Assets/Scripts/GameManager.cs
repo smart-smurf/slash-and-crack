@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         Vector3 p = new Vector3(
             Random.Range(-5f, 5f),
             _BASE_Y + Random.Range(2f, 6f),
-            -1f);
+            1f);
         GameObject o = Instantiate(_obstaclePrefab, p, Quaternion.identity);
     }
 }
