@@ -32,6 +32,7 @@ public class ObstacleManager : MonoBehaviour
         GameManager.instance.obstacles.Remove(this);
         if (!direct)
         {
+            EventManager.TriggerEvent("ObstacleDestroyed");
             _fracturedMesh.SetActive(true);
             _normalMesh.SetActive(false);
             Invoke("_Destroy", 0.45f);
