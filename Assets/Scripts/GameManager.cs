@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    public float speed;
+    [HideInInspector] public float speed;
+    [HideInInspector] public List<ObstacleManager> obstacles;
 
     [SerializeField] private GameObject _obstaclePrefab;
 
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
             instance = this;
 
         speed = _INIT_SPEED;
+        obstacles = new List<ObstacleManager>();
         StartCoroutine(_PoppingObstacles());
     }
 

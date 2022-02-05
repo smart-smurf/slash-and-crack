@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 60
+  obstacles: []
   _obstaclePrefab: {fileID: 1865645703930787888, guid: 0879340a8fe784657967c12a30d47dc7,
     type: 3}
 --- !u!114 &161992714
