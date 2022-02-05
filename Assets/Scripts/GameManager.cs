@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool invulnerable;
 
     [SerializeField] private GameObject _obstaclePrefab;
+    [SerializeField] private Material[] _obstacleMaterials;
 
     private float _popMinWait;
     private float _popMaxWait;
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
         EventManager.RemoveListener("GameOver", _OnGameOver);
     }
 
-    private void _OnObstacleDestroyed()
+    private void _OnObstacleDestroyed(object data)
     {
         if (Random.Range(0f, 1f) < 0.5f)
             _PopObstacle();
@@ -146,7 +147,12 @@ public class GameManager : MonoBehaviour
             Random.Range(0.6f, 1.2f),
             Random.Range(0.6f, 1.2f),
             Random.Range(0.6f, 1.2f));
-        o.GetComponent<ObstacleManager>().SetRotation(new Vector3(
+        ObstacleManager om = o.GetComponent<ObstacleManager>();
+        int level = 0;
+        float r = Random.Range(0f, 1f);
+        if (r < 0.28f) level = 1;
+        else if (r < 0.34f) level = 2;
+        om.Initialize(level, _obstacleMaterials[level], new Vector3(
             Random.Range(0f, 360f),
             Random.Range(0f, 360f),
             Random.Range(0f, 360f)));

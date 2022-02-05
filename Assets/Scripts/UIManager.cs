@@ -56,9 +56,9 @@ public class UIManager : MonoBehaviour
         EventManager.RemoveListener("PauseToggled", _OnPauseToggled);
     }
 
-    private void _OnObstacleDestroyed()
+    private void _OnObstacleDestroyed(object obstacleLevel)
     {
-        _score++;
+        _score += (int) obstacleLevel;
         _scoreText.text = _score.ToString();
     }
 

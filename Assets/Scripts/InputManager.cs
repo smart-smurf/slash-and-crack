@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
                 _ray = _mainCamera.ScreenPointToRay(_t.position);
                 if (Physics.Raycast(_ray, out _hit, 100f, _obstacleLayerMask))
                 {
-                    _hit.transform.GetComponent<ObstacleManager>().Die();
+                    _hit.transform.GetComponent<ObstacleManager>().TakeHit();
                 }
             }
             else if (_t.phase == TouchPhase.Ended)
