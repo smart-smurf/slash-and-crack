@@ -11,7 +11,7 @@ public static class BuildScript
     {
 
         PlayerSettings.Android.useCustomKeystore = true;
-        EditorUserBuildSettings.buildAppBundle = true;
+        EditorUserBuildSettings.buildAppBundle = false;
 
         // Set bundle version. NEW_BUILD_NUMBER environment variable is set in the codemagic.yaml 
         var versionIsSet = int.TryParse(Environment.GetEnvironmentVariable("NEW_BUILD_NUMBER"), out int version);
@@ -73,7 +73,7 @@ public static class BuildScript
             Debug.Log("Keystore alias password not provided");
         }
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.locationPathName = "android/android.aab";
+        buildPlayerOptions.locationPathName = "android/android.apk";
         buildPlayerOptions.target = BuildTarget.Android;
         buildPlayerOptions.options = BuildOptions.None;
         buildPlayerOptions.scenes = GetScenes();
