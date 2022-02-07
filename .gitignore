@@ -69,6 +69,7 @@ crashlytics-build.properties
 
 # Credentials
 *.keystore
+google-services.json
 
 # Misc
 .DS_Store
