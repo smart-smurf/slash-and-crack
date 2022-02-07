@@ -73,7 +73,7 @@ public static class BuildScript
             Debug.Log("Keystore alias password not provided");
         }
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.locationPathName = "android/android.apk";
+        buildPlayerOptions.locationPathName = "android/android.aab";
         buildPlayerOptions.target = BuildTarget.Android;
         buildPlayerOptions.options = BuildOptions.None;
         buildPlayerOptions.scenes = GetScenes();

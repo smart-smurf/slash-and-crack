@@ -23,7 +23,7 @@ workflows:
           export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks=alpha) + 1))
           $UNITY_BIN -batchmode -quit -logFile -projectPath . -executeMethod BuildScript.$BUILD_SCRIPT -nographics        
     artifacts:
-        - android/*.apk
+        - android/*.aab
     publishing:
       scripts:
         - name: Deactivate Unity License
