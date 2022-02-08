@@ -136,7 +136,7 @@ public class UIManager : MonoBehaviour
         while (t < GameManager.INVULNERABILITY_DELAY)
         {
             _invulnerabilityScreen.color = Color.Lerp(start, end, t / GameManager.INVULNERABILITY_DELAY);
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             yield return null;
         }
 

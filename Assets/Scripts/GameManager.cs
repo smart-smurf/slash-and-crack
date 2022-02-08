@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Time.timeScale = 1;
         SceneBooter.instance.LoadMenu();
     }
 

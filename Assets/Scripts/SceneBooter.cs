@@ -32,7 +32,7 @@ public class SceneBooter : MonoBehaviour
         while (t < _TRANSITION_DELAY)
         {
             _sceneTransitionerImage.color = Color.Lerp(Color.black, Color.clear, t);
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -47,9 +47,11 @@ public class SceneBooter : MonoBehaviour
         while (t < _TRANSITION_DELAY)
         {
             _sceneTransitionerImage.color = Color.Lerp(Color.clear, Color.black, t);
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             yield return null;
         }
+
+        Time.timeScale = 1;
 
         AsyncOperation op;
         if (to == "menu")
@@ -63,7 +65,7 @@ public class SceneBooter : MonoBehaviour
         while (t < _TRANSITION_DELAY)
         {
             _sceneTransitionerImage.color = Color.Lerp(Color.black, Color.clear, t);
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             yield return null;
         }
 
