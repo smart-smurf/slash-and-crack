@@ -19,12 +19,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Image _invulnerabilityScreen;
     [SerializeField] private GameObject _pausePanel;
+    [SerializeField] private Text _comboText;
+    private RectTransform _comboRectTransform;
+    private Coroutine _comboCoroutine;
 
     private int _lives;
     private int _score;
+    private int _combo;
 
     private void Start()
     {
+        _comboRectTransform = _comboText.GetComponent<RectTransform>();
+        _comboCoroutine = null;
         _OnReset(true);
     }
 
@@ -46,6 +52,8 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener("ObstaclePassed", _OnObstaclePassed);
         EventManager.AddListener("Reset", _OnReset);
         EventManager.AddListener("PauseToggled", _OnPauseToggled);
+        EventManager.AddListener("ResetCombo", _OnResetCombo);
+        EventManager.AddListener("IncreasedCombo", _OnIncreasedCombo);
     }
 
     private void OnDisable()
@@ -54,11 +62,13 @@ public class UIManager : MonoBehaviour
         EventManager.RemoveListener("ObstaclePassed", _OnObstaclePassed);
         EventManager.RemoveListener("Reset", _OnReset);
         EventManager.RemoveListener("PauseToggled", _OnPauseToggled);
+        EventManager.RemoveListener("ResetCombo", _OnResetCombo);
+        EventManager.RemoveListener("IncreasedCombo", _OnIncreasedCombo);
     }
 
     private void _OnObstacleDestroyed(object obstacleLevel)
     {
-        _score += (int) obstacleLevel;
+        _score += (int) obstacleLevel * _combo;
         _scoreText.text = _score.ToString();
     }
 
@@ -103,11 +113,32 @@ public class UIManager : MonoBehaviour
         _pausePanel.SetActive(false);
 
         StartCoroutine(_ShowingStartText());
+
+        _OnResetCombo();
     }
 
     private void _OnPauseToggled(object on)
     {
-        _pausePanel.SetActive((bool) on);
+        _pausePanel.SetActive((bool)on);
+    }
+
+    private void _OnResetCombo()
+    {
+        _combo = 1;
+        _comboText.text = "";
+    }
+
+    private void _OnIncreasedCombo()
+    {
+        _combo++;
+        _comboText.text = $"x{_combo}";
+
+        float from = 0.5f + 0.1f * Mathf.Log(1 + 0.02f * _combo);
+        float to = 0.75f + 0.1f * Mathf.Log(1 + 0.02f * _combo);
+        if (_comboCoroutine != null)
+            StopCoroutine(_comboCoroutine);
+        _comboCoroutine = StartCoroutine(UIAnimations.ScaleUIElement(
+            _comboRectTransform, from, to, 0.25f));
     }
 
     private void _GameOver()

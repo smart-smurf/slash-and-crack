@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    private const float _COMBO_MAX_TIME = 1f;
+
     [SerializeField] private Transform _trail;
     private TrailRenderer _trailRenderer;
 
@@ -18,6 +20,9 @@ public class InputManager : MonoBehaviour
     private LayerMask _obstacleLayerMask;
 
     private float _topUIThreshold;
+
+    private float _comboStartTime;
+    private Coroutine _comboResetCoroutine;
 
     private void Start()
     {
@@ -61,6 +66,7 @@ public class InputManager : MonoBehaviour
 
         _trailRenderer.enabled = true;
         _touching = true;
+        _comboStartTime = -1f;
         _touchPos = pos;
         _trail.position = _GetWorldPoint(pos);
         _trailingCoroutine = StartCoroutine(_Trailing());
@@ -71,13 +77,32 @@ public class InputManager : MonoBehaviour
         _touchPos = pos;
         _ray = _mainCamera.ScreenPointToRay(pos);
         if (Physics.Raycast(_ray, out _hit, 100f, _obstacleLayerMask))
-            _hit.transform.GetComponent<ObstacleManager>().TakeHit();
+        {
+            (bool hit, bool destroyed) =
+                _hit.transform.GetComponent<ObstacleManager>().TakeHit();
+            if (hit)
+            {
+                if (
+                    destroyed &&
+                    _comboStartTime != -1f &&
+                    Time.time - _comboStartTime <= _COMBO_MAX_TIME
+                )
+                {
+                    EventManager.TriggerEvent("IncreasedCombo");
+                    if (_comboResetCoroutine != null)
+                        StopCoroutine(_comboResetCoroutine);
+                    _comboResetCoroutine = StartCoroutine(_ResettingCombo());
+                }
+                _comboStartTime = Time.time;
+            }
+        }
     }
 
     private void _PointerUp()
     {
         _trailRenderer.enabled = false;
         _touching = false;
+        _comboStartTime = -1f;
         if (_trailingCoroutine != null)
         {
             StopCoroutine(_trailingCoroutine);
@@ -100,5 +125,11 @@ public class InputManager : MonoBehaviour
                 _trail.position = _GetWorldPoint(_touchPos);
             yield return null;
         }
+    }
+
+    private IEnumerator _ResettingCombo()
+    {
+        yield return new WaitForSeconds(_COMBO_MAX_TIME);
+        EventManager.TriggerEvent("ResetCombo");
     }
 }

@@ -41,11 +41,32 @@ public class ObstacleManager : MonoBehaviour
         _fracturedMesh.transform.eulerAngles = eulerAngles;
     }
 
-    public void TakeHit()
+    public (bool, bool) TakeHit()
     {
-        if (_takenHit) return;
+        if (_takenHit) return (false, false);
         AudioManager.instance.PlaySound(AudioClipId.Slash);
+
+        _lives--;
+        bool destroyed;
+        if (_lives == 0)
+        {
+            destroyed = true;
+            Die();
+        }
+        else
+        {
+            destroyed = false;
+            transform.localScale *= 0.75f;
+            Vector3 ea = new Vector3(
+                Random.Range(0f, 360f),
+                Random.Range(0f, 360f),
+                Random.Range(0f, 360f));
+            _normalMesh.transform.eulerAngles = ea;
+            _fracturedMesh.transform.eulerAngles = ea;
+        }
+
         StartCoroutine(_TakingHit());
+        return (true, destroyed);
     }
 
     public void Die(bool direct = false)
@@ -74,22 +95,7 @@ public class ObstacleManager : MonoBehaviour
     private IEnumerator _TakingHit()
     {
         _takenHit = true;
-        _lives--;
-        if (_lives == 0)
-            Die();
-        else
-        {
-            transform.localScale *= 0.75f;
-            Vector3 ea = new Vector3(
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f));
-            _normalMesh.transform.eulerAngles = ea;
-            _fracturedMesh.transform.eulerAngles = ea;
-        }
-
         yield return new WaitForSeconds(0.1f);
-
         _takenHit = false;
     }
 }
