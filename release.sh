@@ -1,0 +1,1 @@
+release-it --only-version && cp CHANGELOG.md release_notes.txt
