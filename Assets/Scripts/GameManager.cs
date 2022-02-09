@@ -75,7 +75,8 @@ public class GameManager : MonoBehaviour
         {
             invulnerable = true;
             Invoke("_RemoveInvulnerability", INVULNERABILITY_DELAY);
-            AudioManager.instance.PlaySound(AudioClipId.PlayerHit);
+            if (AudioManager.instance)
+                AudioManager.instance.PlaySound(AudioClipId.PlayerHit);
         }
     }
 

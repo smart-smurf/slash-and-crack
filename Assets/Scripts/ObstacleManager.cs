@@ -44,7 +44,8 @@ public class ObstacleManager : MonoBehaviour
     public (bool, bool) TakeHit()
     {
         if (_takenHit) return (false, false);
-        AudioManager.instance.PlaySound(AudioClipId.Slash);
+        if (AudioManager.instance)
+            AudioManager.instance.PlaySound(AudioClipId.Slash);
 
         _lives--;
         bool destroyed;
